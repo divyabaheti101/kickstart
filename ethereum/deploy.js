@@ -4,7 +4,7 @@ const compiledFactory = require("./build/CampaignFactory.json");
 
 const provider = new HDWalletProvider(
   "initial response truly oak promote uncover adapt drop average unlock simple flock",
-  "https://goerli.infura.io/v3/fee8dd8de68a4101a446b3b41ed1c065"
+  "https://sepolia.infura.io/v3/a2b9871bfe66456db5f80d3564f4b94c"
 );
 
 const web3 = new Web3(provider);
