@@ -1,12 +1,22 @@
 import { Component } from "react";
 import React from "react";
 import Layout from "../../components/Layout";
+import { Form, Button } from "semantic-ui-react";
 
 class CampaignNew extends Component {
   render() {
     return (
       <Layout>
-        <h1>New Cmapaign</h1>
+        <h3>Create a Campaign</h3>
+
+        <Form>
+          <Form.Field>
+            <label>Minimum Contribution</label>
+            <input />
+          </Form.Field>
+
+          <Button primary>Create!</Button>
+        </Form>
       </Layout>
     );
   }
