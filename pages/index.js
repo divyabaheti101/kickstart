@@ -10,9 +10,12 @@ class CampaignIndex extends Component {
     return { campaigns };
   }
 
-  //In next if you want to load any data, it should be loaded in this method, instead of
-  //get componentMount as in react
-  //it is static bcoz we don't want to create instance of CampaignIndex just want to render it.
+  // In next if you want to load any data, it should be loaded in this method, instead of
+  // get componentMount as in react
+  // next doesn't render the component -> so it woun't be called on server side.
+  // but if we want to load data, then it needs to be called initialProps()
+  // it is static bcoz we don't want to create instance of CampaignIndex just want to render it.
+  // check next's offical doc, for better expln.
 
   // async componentDidMount() {
   //   const campaign = await factory.methods.getDeployedContracts().call();
