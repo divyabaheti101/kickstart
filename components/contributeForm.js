@@ -15,16 +15,14 @@ class ContributeForm extends Component {
 
   render() {
     return (
-      <Form onSubmit={onSubmit}>
+      <Form onSubmit={this.onSubmit}>
         <Form.Field>
           <label>Amount to Contribute</label>
           <Input
             label="ether"
             labelPosition="right"
             value={this.state.value}
-            onChange={this.setState((event) => {
-              value = event.target.value;
-            })}
+            onChange={(event) => this.setState({ value: event.target.value })}
           />
         </Form.Field>
         <Button primary>Contribute!</Button>
