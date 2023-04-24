@@ -1,7 +1,8 @@
-import { Component } from "react";
+import React, { Component } from "react";
 import { Button, Form, Input, Message } from "semantic-ui-react";
 import Campaign from "../ethereum/campaign";
 import web3 from "../ethereum/web3";
+import { Router } from "../routes";
 
 class ContributeForm extends Component {
   state = {
@@ -15,10 +16,7 @@ class ContributeForm extends Component {
 
     const campaign = Campaign(this.props.address);
 
-    this.setState({
-      loading: true,
-      errorMessage: "",
-    });
+    this.setState({ loading: true, errorMessage: "" });
 
     try {
       const accounts = await web3.eth.getAccounts();
@@ -26,7 +24,7 @@ class ContributeForm extends Component {
         from: accounts[0],
         value: web3.utils.toWei(this.state.value, "ether"),
       });
-      Router.replaceRoute(`/campaigns/$(this.props.address)`);
+      Router.replaceRoute(`/campaigns/${this.props.address}`);
       //used replace route instead of pushRoute bcoz we don't want to create history in browser
       //just refresh the page
     } catch (err) {
@@ -48,11 +46,7 @@ class ContributeForm extends Component {
             onChange={(event) => this.setState({ value: event.target.value })}
           />
         </Form.Field>
-        <Message
-          error
-          header="Oops!"
-          content={this.state.errorMessage}
-        ></Message>
+        <Message error header="Oops!" content={this.state.errorMessage} />
         <Button primary loading={this.state.loading}>
           Contribute!
         </Button>
