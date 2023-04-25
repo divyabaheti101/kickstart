@@ -1,7 +1,8 @@
-import { Button, Form, Input } from "semantic-ui-react";
+import { Button, Form, Input, Message } from "semantic-ui-react";
 import Layout from "../../../components/Layout";
 import Campaign from "../../../ethereum/campaign";
 import web3 from "../../../ethereum/web3";
+import { Router, Link } from "../../../routes";
 
 const { Component } = require("react");
 
@@ -10,6 +11,8 @@ class RequestNew extends Component {
     description: "",
     value: "",
     reciepient: "",
+    loading: false,
+    errMessage: "",
   };
 
   static async getInitialProps(props) {
@@ -23,6 +26,8 @@ class RequestNew extends Component {
     const campaign = Campaign(this.props.address);
     const { description, value, reciepient } = this.state;
 
+    this.setState({ loading: true, errMessage: "" });
+
     try {
       const accounts = await web3.eth.getAccounts();
       await campaign.methods
@@ -34,14 +39,22 @@ class RequestNew extends Component {
         .send({
           from: accounts[0],
         });
-    } catch (err) {}
+      Router.pushRoute(`/campaigns/${this.props.address}/requests`);
+    } catch (err) {
+      this.setState({ errMessage: err.message });
+    }
+
+    this.setState({ loading: false });
   };
 
   render() {
     return (
       <Layout>
+        <Link route={`/campaigns/${this.props.address}/requests`}>
+          <a>Back</a>
+        </Link>
         <h3>Create Request</h3>
-        <Form onSubmit={this.onSubmit}>
+        <Form onSubmit={this.onSubmit} error={!!this.state.errMessage}>
           <Form.Field>
             <label>Description</label>
             <Input
@@ -67,7 +80,15 @@ class RequestNew extends Component {
               }
             />
           </Form.Field>
-          <Button primary>Create!</Button>
+
+          <Message
+            error
+            header="Oops!"
+            content={this.state.errMessage}
+          ></Message>
+          <Button primary loading={this.state.loading}>
+            Create!
+          </Button>
         </Form>
       </Layout>
     );
