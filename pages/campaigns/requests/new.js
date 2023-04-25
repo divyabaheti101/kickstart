@@ -1,5 +1,7 @@
 import { Button, Form, Input } from "semantic-ui-react";
 import Layout from "../../../components/Layout";
+import Campaign from "../../../ethereum/campaign";
+import web3 from "../../../ethereum/web3";
 
 const { Component } = require("react");
 
@@ -15,11 +17,31 @@ class RequestNew extends Component {
     return { address };
   }
 
+  onSubmit = async () => {
+    event.preventDefault();
+
+    const campaign = Campaign(this.props.address);
+    const { description, value, reciepient } = this.state;
+
+    try {
+      const accounts = await web3.eth.getAccounts();
+      await campaign.methods
+        .createRequest(
+          description,
+          web3.utils.toWei(value, "ether"),
+          reciepient
+        )
+        .send({
+          from: accounts[0],
+        });
+    } catch (err) {}
+  };
+
   render() {
     return (
       <Layout>
         <h3>Create Request</h3>
-        <Form>
+        <Form onSubmit={this.onSubmit}>
           <Form.Field>
             <label>Description</label>
             <Input
@@ -30,7 +52,7 @@ class RequestNew extends Component {
             />
           </Form.Field>
           <Form.Field>
-            <label>Value</label>
+            <label>Value in Ether</label>
             <Input
               value={this.state.value}
               onChange={(event) => this.setState({ value: event.target.value })}
