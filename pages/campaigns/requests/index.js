@@ -27,10 +27,11 @@ class RequestIndex extends Component {
   }
 
   renderRows() {
-    this.props.requests.map((request, index) => {
+    return this.props.requests.map((request, index) => {
       return (
         <RequestRow
           key={index}
+          id={index}
           request={request}
           address={this.props.address}
         />
