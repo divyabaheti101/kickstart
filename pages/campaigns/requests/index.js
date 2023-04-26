@@ -11,6 +11,7 @@ class RequestIndex extends Component {
 
     const campaign = Campaign(address);
     const requestCount = await campaign.methods.getRequestsCount().call();
+    const approversCount = await campaign.methods.approversCount().call();
 
     //Due to Limitation of Solidity
     //We can get all requests in one go from Solidity as Request is a Struct type.
@@ -23,7 +24,7 @@ class RequestIndex extends Component {
         })
     );
 
-    return { address, requests };
+    return { address, requests, approversCount };
   }
 
   renderRows() {
@@ -34,6 +35,7 @@ class RequestIndex extends Component {
           id={index}
           request={request}
           address={this.props.address}
+          approversCount={this.props.approversCount}
         />
       );
     });
