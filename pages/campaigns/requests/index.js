@@ -17,7 +17,7 @@ class RequestIndex extends Component {
     //We can get all requests in one go from Solidity as Request is a Struct type.
     //So we loop thru the requests using count of requests.
     const requests = await Promise.all(
-      Array(requestCount)
+      Array(parseInt(requestCount))
         .fill()
         .map((element, index) => {
           return campaign.methods.requests(index).call();

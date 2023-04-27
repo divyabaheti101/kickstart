@@ -20,7 +20,7 @@ class RequestNew extends Component {
     return { address };
   }
 
-  onSubmit = async () => {
+  onSubmit = async (event) => {
     event.preventDefault();
 
     const campaign = Campaign(this.props.address);
