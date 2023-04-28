@@ -1,17 +1,28 @@
 import { Button, Table } from "semantic-ui-react";
 import Campaign from "../ethereum/campaign";
 import web3 from "../ethereum/web3";
+import { Router } from "../routes";
 
 const { Component } = require("react");
 
 class RequestRow extends Component {
+  state = {
+    errMessage: "",
+    loadingApprove: false,
+  };
   onApprove = async () => {
-    const campaign = await Campaign(this.props.address);
-    const accounts = await web3.eth.getAccounts();
+    this.setState({ errMessage: "" });
+    try {
+      const campaign = await Campaign(this.props.address);
+      const accounts = await web3.eth.getAccounts();
 
-    await campaign.methods.approveRequest(this.props.id).send({
-      from: accounts[0],
-    });
+      await campaign.methods.approveRequest(this.props.id).send({
+        from: accounts[0],
+      });
+      Router.replaceRoute(`/campaigns/${this.props.address}/requests/`);
+    } catch (err) {
+      this.setState({ errMessage: err.message });
+    }
   };
 
   onFinallize = async () => {
@@ -21,6 +32,7 @@ class RequestRow extends Component {
     await campaign.methods.finalizeRequest(this.props.id).send({
       from: accounts[0],
     });
+    Router.replaceRoute(`/campaigns/${this.props.address}/requests/`);
   };
   render() {
     const { Row, Cell } = Table;
